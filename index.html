@@ -17,7 +17,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
     if('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/gis-pudamts/sw.js')
+      navigator.serviceWorker.register('/sw.js')
         .then(registration => {
           console.log("Service Worker Registered");
   
@@ -240,25 +240,61 @@
 
         
         // Buat grup layer untuk menyimpan lapisan
-        var dma_layer = L.layerGroup();
-        var pipa_layer = L.layerGroup();
-        var sb_layer = L.layerGroup();
-        var map_layer = L.layerGroup();
-        var mag_layer = L.layerGroup();
-        var res_layer = L.layerGroup();
+        var dma_layer   = L.layerGroup();
+        var pipa_layer  = L.layerGroup();
+        
+        // digunakan jika mau layer tidak di group
+        var sb_layer    = L.layerGroup();
+        var map_layer   = L.layerGroup();
+        var mag_layer   = L.layerGroup();
+        var res_layer   = L.layerGroup();
+
+        var sumber_lg   = L.layerGroup();
+
+       // var title = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //       maxZoom: 19,
+        //       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        //     }).addTo(map);
+            // Base map (peta latar) dari OpenStreetMap
+
+            var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+            var mbUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYXJpYW5haXdhbiIsImEiOiJjbGQ4NWkzajMxMW84M3FtbTRwd2FvM2RyIn0.lyvWMJwp6a-FjSPJ8Ijm9A';
+            // Base map (peta latar) dari Mapbox Satellite
+            var mapboxSatellite = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                maxZoom: 19,
+                attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a>',
+                id: 'mapbox/satellite-v9',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: 'pk.eyJ1IjoiYXJpYW5haXdhbiIsImEiOiJjbGQ4NWkzajMxMW84M3FtbTRwd2FvM2RyIn0.lyvWMJwp6a-FjSPJ8Ijm9A'
+            });
+            var streets = L.tileLayer(mbUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr});
+
+            var openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        });
+
 
         // Membuat kontrol layer
+        
         var overlayMaps = {
           "Dma": dma_layer,
           "Pipa": pipa_layer,
-          "Sb": sb_layer,
-          "Map": map_layer,
-          "Mag": mag_layer,
-          "Res": res_layer
-        };
+          "Sumber" : sumber_lg
 
-        L.control.layers(null, overlayMaps).addTo(map);
-        var marker = L.marker([-8.536294722356594, 115.32536629044803]).addTo(map); // Membuat marker awal
+        };
+        var baseMaps = {
+          "OpenStreetMap": openStreetMap ,
+          "Mapbox Streets": streets,
+          "Mapbox Satellite": mapboxSatellite
+        }
+
+        // L.control.layers(null, overlayMaps,).addTo(map);
+        // Menggabungkan base maps dan overlay layer dalam satu kontrol layer
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+        var marker = L.marker(['-8.536294722356594', '115.32536629044803']).addTo(map); // Membuat marker awal
         var watchId = null; // ID watchPosition yang akan disimpan
 
         // Mengimpor data dma GeoJSON dari URL
@@ -307,7 +343,7 @@
               });
               return L.marker(latlng, { icon: customIcon });
             }
-          }).addTo(sb_layer);
+          }).addTo(sumber_lg);
         });
  
         // Mengimpor data map GeoJSON garis dari URL
@@ -324,7 +360,7 @@
               });
               return L.marker(latlng, { icon: customIcon });
             }
-          }).addTo(map_layer);
+          }).addTo(sumber_lg);
         });
        
         // Mengimpor data mag GeoJSON garis dari URL
@@ -341,7 +377,7 @@
               });
               return L.marker(latlng, { icon: customIcon });
             }
-          }).addTo(mag_layer);
+          }).addTo(sumber_lg);
         });
   
         // Mengimpor data res GeoJSON garis dari URL
@@ -358,14 +394,10 @@
               });
               return L.marker(latlng, { icon: customIcon });
             }
-          }).addTo(res_layer);
+          }).addTo(sumber_lg);
         });
        
-        var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 19,
-              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
-
+ 
         // Fungsi untuk menentukan warna berdasarkan diameter
         function getColorByDiameter(diameter) {
             if (diameter == '300') {
@@ -393,14 +425,14 @@
             }
           }
 
-        function onLocationFound(e) {
-          var radius = e.accuracy / 2;
+        // function onLocationFound(e) {
+        //   var radius = e.accuracy / 2;
 
-          var locationMarker = L.marker(e.latlng).addTo(map)
-            .bindPopup('You are within ' + radius + ' meters from this point').openPopup();
+        //   var locationMarker = L.marker(e.latlng).addTo(map)
+        //     .bindPopup('You are within ' + radius + ' meters from this point').openPopup();
 
-          var locationCircle = L.circle(e.latlng, radius).addTo(map);
-        }
+        //   var locationCircle = L.circle(e.latlng, radius).addTo(map);
+        // }
         // Fungsi untuk memperbarui lokasi marker berdasarkan data Geolocation
         function updateLocation(position) {
           var latitude = position.coords.latitude;
