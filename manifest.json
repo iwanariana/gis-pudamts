@@ -1,18 +1,20 @@
 {
-    "name": "My Onsen UI PWA",
-    "short_name": "Onsen PWA",
-    "start_url": "/gis-pudamts/",
-    "display": "standalone",
-    "theme_color": "#fff",
-    "background_color": "#fff",
-    "icons": [{
+  "name": "GIS PUDAMTS UI PWA",
+  "short_name": "GIS PUDAMTS",
+  "start_url": "/gis-pudamts/",
+  "display": "standalone",
+  "theme_color": "#ffffff", // Ubah ke nilai warna yang sesuai
+  "background_color": "#ffffff", // Ubah ke nilai warna yang sesuai
+  "icons": [
+    {
       "src": "https://via.placeholder.com/192x192",
       "sizes": "192x192",
       "type": "image/png"
-    },{
+    },
+    {
       "src": "https://via.placeholder.com/512x512",
       "sizes": "512x512",
       "type": "image/png"
-    }]
-  }
-  
+    }
+  ]
+}
