@@ -19,13 +19,7 @@ self.addEventListener('install', function(e) {
           'https://unpkg.com/onsenui/js/onsenui.min.js',
           'https://unpkg.com/jquery/dist/jquery.min.js',
           'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-          'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-          '/geojson/dma.geojson',
-          '/geojson/pipa_new.geojson',
-          '/geojson/sb.geojson',
-          '/geojson/map.geojson',
-          '/geojson/mag.geojson',
-          '/geojson/res.geojson',       
+          'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'    
          
         ]);
       })
