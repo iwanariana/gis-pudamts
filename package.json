@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "onsenui": "^2.12.8",
+    "react-onsenui": "^1.13.3"
+  }
+}
