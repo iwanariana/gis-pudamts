@@ -12,8 +12,8 @@ self.addEventListener('install', function(e) {
         // If the request for any of these resources fails, _none_ of the resources will be
         // added to the cache.
         return cache.addAll([
-          '/',
-          '/index.html',
+          '/gis-pudamts/',
+          '//gis-pudamts/index.html',
           'https://unpkg.com/onsenui/css/onsenui.min.css',
           'https://unpkg.com/onsenui/css/onsen-css-components.min.css',
           'https://unpkg.com/onsenui/js/onsenui.min.js',
@@ -25,11 +25,7 @@ self.addEventListener('install', function(e) {
           '/geojson/sb.geojson',
           '/geojson/map.geojson',
           '/geojson/mag.geojson',
-          '/geojson/res.geojson',
-          '/icon/Sb.svg',
-          '/icon/Map.svg',
-          '/icon/Mag.svg',
-          '/icon/Res.svg',         
+          '/geojson/res.geojson',       
          
         ]);
       })
