@@ -13,7 +13,7 @@ self.addEventListener('install', function(e) {
         // added to the cache.
         return cache.addAll([
           '/gis-pudamts/',
-          '//gis-pudamts/index.html',
+          '/gis-pudamts/index.html',
           'https://unpkg.com/onsenui/css/onsenui.min.css',
           'https://unpkg.com/onsenui/css/onsen-css-components.min.css',
           'https://unpkg.com/onsenui/js/onsenui.min.js',
