@@ -13,23 +13,22 @@ self.addEventListener('install', function(e) {
         // added to the cache.
         return cache.addAll([
           '/',
-          '/index.html',
+          '/gis-pudamts/index.html',
           'https://unpkg.com/onsenui/css/onsenui.min.css',
           'https://unpkg.com/onsenui/css/onsen-css-components.min.css',
           'https://unpkg.com/onsenui/js/onsenui.min.js',
           'https://unpkg.com/jquery/dist/jquery.min.js',
           'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
           'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-          '/geojson/dma.geojson',
-          '/geojson/pipa_new.geojson',
-          '/geojson/sb.geojson',
-          '/geojson/map.geojson',
-          '/geojson/mag.geojson',
-          '/geojson/res.geojson',
-          '/icon/Sb.svg',
-          '/icon/Map.svg',
-          '/icon/Mag.svg',
-          '/icon/Res.svg',         
+          '/gis-pudamts/geojson/dma.geojson',
+          '/gis-pudamts/geojson/pipa_new.geojson',
+          '/gis-pudamts/geojson/sb.geojson',
+          '/gis-pudamts/geojson/map.geojson',
+          '/gis-pudamts/geojson/mag.geojson',
+          '/gis-pudamts/geojson/res.geojson',
+          '/gis-pudamts/icon/Map.svg',
+          '/gis-pudamts/icon/Mag.svg',
+          '/gis-pudamts/icon/Res.svg',         
          
         ]);
       })
