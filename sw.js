@@ -12,6 +12,8 @@ self.addEventListener('install', function(e) {
           'https://unpkg.com/jquery/dist/jquery.min.js',
           'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
           'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
+            'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+          'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
         
         ]);
       })
