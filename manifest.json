@@ -3,7 +3,7 @@
     "short_name": "Onsen PWA",
     "start_url": "https://iwanariana.github.io/gis-pudamts/",
     "display": "standalone",
-    "theme_color": "#ef4e2a",
+    "theme_color": "#fff",
     "background_color": "#fff",
     "icons": [{
       "src": "https://via.placeholder.com/192x192",
