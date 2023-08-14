@@ -1,11 +1,11 @@
 {
-  "name": "My Onsen UI PWA",
-  "short_name": "Onsen PWA",
+  "name": "GIS PUDAMTS UI PWA",
+  "short_name": "GIS PUDAMTS",
   "start_url": "/gis-pudamts/",
   "display": "standalone",
   "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "color" :[
+  "background_color": "#ffffff", 
+  "icons":[
     {
       "src": "https://via.placeholder.com/192x192",
       "sizes": "192x192",
