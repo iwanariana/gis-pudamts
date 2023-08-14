@@ -1,7 +1,7 @@
 {
     "name": "My Onsen UI PWA",
     "short_name": "Onsen PWA",
-    "start_url": "https://iwanariana.github.io/pudamts-gis/",
+    "start_url": "https://iwanariana.github.io/gis-pudamts/",
     "display": "standalone",
     "theme_color": "#ef4e2a",
     "background_color": "#fff",
