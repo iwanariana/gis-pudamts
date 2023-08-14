@@ -26,6 +26,10 @@ self.addEventListener('install', function(e) {
           '/gis-pudamts/geojson/map.geojson',
           '/gis-pudamts/geojson/mag.geojson',
           '/gis-pudamts/geojson/res.geojson',
+              '/gis-pudamts/icon/SB.svg',
+                 '/gis-pudamts/icon/Map.svg',
+                '/gis-pudamts/icon/Mag.svg',
+                '/gis-pudamts/icon/Res.svg',
          
         ]);
       })
