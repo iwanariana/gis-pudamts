@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
   <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
   <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
-  <link rel="manifest" href="/gis-pudamts/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" sizes="192x192" href="https://via.placeholder.com/192x192">
   <link rel="apple-touch-icon" sizes="512x512" href="https://via.placeholder.com/512x512">
   <!-- leaflet js -->
@@ -17,7 +17,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
     if('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/gis-pudamts/sw.js')
+      navigator.serviceWorker.register('/sw.js')
         .then(registration => {
           console.log("Service Worker Registered");
   
@@ -213,6 +213,11 @@
   <template id="home.html">
     <ons-page>
       <div id='map'></div>
+      <ons-fab position="bottom right" id="toggleButton">
+        <ons-icon
+          icon="md-plus">
+        </ons-icon>
+      </ons-fab>
 
       <style>
         #map {
@@ -253,8 +258,9 @@
         };
 
         L.control.layers(null, overlayMaps).addTo(map);
+        var marker = L.marker([-8.536294722356594, 115.32536629044803]).addTo(map); // Membuat marker awal
+        var watchId = null; // ID watchPosition yang akan disimpan
 
-        
         // Mengimpor data dma GeoJSON dari URL
         fetch(dma_geojsonUrl)
           .then(response => response.json())
@@ -276,7 +282,14 @@
                 var diameter = feature.properties.diameter; // Ganti dengan nama properti diameter di GeoJSON
                 var color = getColorByDiameter(diameter);
                 return color;
-              }
+              },
+              onEachFeature: function(feature, layer) {
+            layer.on('click', function() {
+              // Tindakan yang diambil saat garis di-klik
+              var properties = feature.properties;
+              var message = "Nama: " + properties.name + "<br>" + "Panjang: " + properties.length;
+              alert(message);
+            })}
             }).addTo(pipa_layer);
           });
 
@@ -388,15 +401,46 @@
 
           var locationCircle = L.circle(e.latlng, radius).addTo(map);
         }
+        // Fungsi untuk memperbarui lokasi marker berdasarkan data Geolocation
+        function updateLocation(position) {
+          var latitude = position.coords.latitude;
+          var longitude = position.coords.longitude;
 
-        function onLocationError(e) {
-          alert(e.message);
+          // Perbarui lokasi marker
+          marker.setLatLng([latitude, longitude]);
+          map.setView([latitude, longitude], 15); // Contoh zoom level 15
         }
 
-        map.on('locationfound', onLocationFound);
-        map.on('locationerror', onLocationError);
+        // Fungsi yang akan dipanggil saat permintaan lokasi berhasil
+        function successCallback(position) {
+          updateLocation(position);
+        }
 
-        map.locate({setView: true, maxZoom: 16});
+        // Fungsi untuk mengaktifkan/mematikan pembaruan lokasi
+        function toggleLocationUpdate() {
+          if (watchId === null) {
+            watchId = navigator.geolocation.watchPosition(successCallback, errorCallback);
+          } else {
+            navigator.geolocation.clearWatch(watchId);
+            watchId = null;
+          }
+        }
+
+        // Tambahkan event listener untuk tombol toggle
+        document.getElementById('toggleButton').addEventListener('click', toggleLocationUpdate);
+        
+
+        // Fungsi yang akan dipanggil saat permintaan lokasi gagal
+        function errorCallback(error) {
+          console.error('Error getting location:', error);
+        }
+
+        // Minta izin pengguna untuk akses lokasi
+        // if ('geolocation' in navigator) {
+        //   navigator.geolocation.watchPosition(successCallback, errorCallback);
+        // } else {
+        //   console.error('Geolocation is not supported in this browser.');
+        // }
 
         }
  
