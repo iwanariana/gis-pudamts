@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html  lang="en">
+<html lang="en">
+
 <head>
   <title>PUDAMTS GIS App</title>
   <meta name="description" content="Data center GIS, Create for Analisi Data with data spacial">
@@ -9,31 +10,37 @@
   <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
   <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
   <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
-  <link rel="manifest" href="/gis-pudamts/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" sizes="192x192" href="https://via.placeholder.com/192x192">
   <link rel="apple-touch-icon" sizes="512x512" href="https://via.placeholder.com/512x512">
   <!-- leaflet js -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Slide -->
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+
   <script>
-    if('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/gis-pudamts/sw.js')
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
         .then(registration => {
           console.log("Service Worker Registered");
-  
+
           // We don't want to check for updates on first load or we will get a false d
           // positive. registration.active will be falsy on first load.
-          if(registration.active) {
+          if (registration.active) {
             // Check if an updated sw.js was found
             registration.addEventListener('updatefound', () => {
               console.log('Update found. Waiting for install to complete.');
               const installingWorker = registration.installing;
-  
+
               // Watch for changes to the worker's state. Once it is "installed", our cache
               // has been updated with our new files, so we can prompt the user to instantly
               // reload.
               installingWorker.addEventListener('statechange', () => {
-                if(installingWorker.state === 'installed') {
+                if (installingWorker.state === 'installed') {
                   console.log('Install complete. Triggering update prompt.');
                   onUpdateFound();
                 }
@@ -43,60 +50,35 @@
         })
         .catch(e => console.log(e));
     }
-  
+
     function onUpdateFound() {
       ons.notification.confirm('A new update is ready. Do you want to update now?')
         .then(buttonIndex => {
-          if(buttonIndex === 1) {
+          if (buttonIndex === 1) {
             location.reload();
           }
         });
     }
   </script>
-
 </head>
+
 <body>
-  <ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
+  <ons-navigator id="appNavigator" swipe-target-width="80px">
     <ons-page>
       <ons-splitter id="appSplitter">
-        <ons-splitter-side id="sidemenu" page="sidemenu.html" swipeable side="right" collapse="" width="260px"></ons-splitter-side>
+        <ons-splitter-side id="sidemenu" page="sidemenu.html" side="right" collapse="" width="260px">
+        </ons-splitter-side>
         <ons-splitter-content page="tabbar.html"></ons-splitter-content>
       </ons-splitter>
     </ons-page>
   </ons-navigator>
-  
-  <template id="tabbar.html">
-    <ons-page id="tabbar-page">
-      <ons-toolbar>
-        <div class="center">Home</div>
-        <div class="right">
-          <ons-toolbar-button onclick="fn.toggleMenu()">
-            <ons-icon icon="ion-ios-menu, material:md-menu"></ons-icon>
-          </ons-toolbar-button>
-        </div>
-      </ons-toolbar>
-      <ons-tabbar swipeable id="appTabbar" position="auto">
-        <ons-tab label="Home" icon="ion-ios-home" page="home.html" active></ons-tab>
-        <ons-tab label="Forms" icon="ion-ios-create" page="forms.html"></ons-tab>
-        <ons-tab label="Animations" icon="ion-ios-film" page="animations.html"></ons-tab>
-      </ons-tabbar>
-  
-      <script>
-        ons.getScriptPage().addEventListener('prechange', function(event) {
-          if (event.target.matches('#appTabbar')) {
-            event.currentTarget.querySelector('ons-toolbar .center').innerHTML = event.tabItem.getAttribute('label');
-          }
-        });
-      </script>
-    </ons-page>
-  </template>
-  
+
   <template id="sidemenu.html">
     <ons-page>
       <div class="profile-pic">
         <img src="https://monaca.io/img/logos/download_image_onsenui_01.png">
       </div>
-  
+
       <ons-list-title>Access</ons-list-title>
       <ons-list>
         <ons-list-item onclick="fn.loadView(0)">
@@ -133,7 +115,7 @@
           </div>
         </ons-list-item>
       </ons-list>
-  
+
       <ons-list-title style="margin-top: 10px">Links</ons-list-title>
       <ons-list>
         <ons-list-item onclick="fn.loadLink('https://onsen.io/v2/docs/guide/js/')">
@@ -181,14 +163,14 @@
           </div>
         </ons-list-item>
       </ons-list>
-  
+
       <script>
-        ons.getScriptPage().onInit = function() {
+        ons.getScriptPage().onInit = function () {
           // Set ons-splitter-side animation
           this.parentElement.setAttribute('animation', ons.platform.isAndroid() ? 'overlay' : 'reveal');
         };
       </script>
-  
+
       <style>
         .profile-pic {
           width: 200px;
@@ -197,292 +179,330 @@
           border: 1px solid #999;
           border-radius: 4px;
         }
-  
-        .profile-pic > img {
+
+        .profile-pic>img {
           display: block;
           max-width: 100%;
         }
-  
+
         ons-list-item {
           color: #444;
         }
       </style>
     </ons-page>
   </template>
-  
-  <template id="home.html">
-    <ons-page>
-      <div id='map'></div>
-      <ons-fab position="bottom right" id="toggleButton">
-        <ons-icon
-          icon="md-plus">
-        </ons-icon>
-      </ons-fab>
 
-      <style>
-        #map {
-          width:100%;
-          height: 100vh;
-        }
-  
-      </style>
-      <!-- <script type="text/javascript" src="./geojson/dma.js"></script> -->
+  <template id="tabbar.html">
+    <ons-page id="tabbar-page">
+      <ons-toolbar>
+        <div class="center">Home</div>
+        <div class="right">
+          <ons-toolbar-button onclick="fn.toggleMenu()">
+            <ons-icon icon="ion-ios-menu, material:md-menu"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+      </ons-toolbar>
+      <ons-tabbar id="appTabbar" position="auto">
+        <ons-tab label="Home" icon="ion-ios-home" page="home.html" active></ons-tab>
+        <ons-tab label="Aksesoris" icon="ion-ios-create" page="aksesoris.html"></ons-tab>
+        <ons-tab label="Gis" icon="ion-ios-film" page="gis.html"></ons-tab>
+
+      </ons-tabbar>
+
       <script>
-        
-        ons.getScriptPage().onInit = function () {
-        var map = L.map('map').fitWorld();
-        var dma_geojsonUrl  = './geojson/dma.geojson';
-        var pipa_geojsonUrl  = './geojson/pipa_new.geojson';
-        var sb_geojsonUrl  = './geojson/sb.geojson';
-        var map_geojsonUrl  = './geojson/map.geojson';
-        var mag_geojsonUrl  = './geojson/mag.geojson';
-        var res_geojsonUrl  = './geojson/res.geojson';
-
-        
-        // Buat grup layer untuk menyimpan lapisan
-        var dma_layer   = L.layerGroup();
-        var pipa_layer  = L.layerGroup();
-        
-        // digunakan jika mau layer tidak di group
-        var sb_layer    = L.layerGroup();
-        var map_layer   = L.layerGroup();
-        var mag_layer   = L.layerGroup();
-        var res_layer   = L.layerGroup();
-
-        var sumber_lg   = L.layerGroup();
-
-       // var title = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //       maxZoom: 19,
-        //       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        //     }).addTo(map);
-            // Base map (peta latar) dari OpenStreetMap
-
-            var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
-            var mbUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYXJpYW5haXdhbiIsImEiOiJjbGQ4NWkzajMxMW84M3FtbTRwd2FvM2RyIn0.lyvWMJwp6a-FjSPJ8Ijm9A';
-            // Base map (peta latar) dari Mapbox Satellite
-            var mapboxSatellite = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                maxZoom: 19,
-                attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a>',
-                id: 'mapbox/satellite-v9',
-                tileSize: 512,
-                zoomOffset: -1,
-                accessToken: 'pk.eyJ1IjoiYXJpYW5haXdhbiIsImEiOiJjbGQ4NWkzajMxMW84M3FtbTRwd2FvM2RyIn0.lyvWMJwp6a-FjSPJ8Ijm9A'
-            });
-            var streets = L.tileLayer(mbUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1, attribution: mbAttr});
-
-            var openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
-        });
-
-
-        // Membuat kontrol layer
-        
-        var overlayMaps = {
-          "Dma": dma_layer,
-          "Pipa": pipa_layer,
-          "Sumber" : sumber_lg
-
-        };
-        var baseMaps = {
-          "OpenStreetMap": openStreetMap ,
-          "Mapbox Streets": streets,
-          "Mapbox Satellite": mapboxSatellite
-        }
-
-        // L.control.layers(null, overlayMaps,).addTo(map);
-        // Menggabungkan base maps dan overlay layer dalam satu kontrol layer
-        L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-        var marker = L.marker(['-8.536294722356594', '115.32536629044803']).addTo(map); // Membuat marker awal
-        var watchId = null; // ID watchPosition yang akan disimpan
-
-        // Mengimpor data dma GeoJSON dari URL
-        fetch(dma_geojsonUrl)
-          .then(response => response.json())
-          .then(geojsonFeature => {
-            L.geoJSON(geojsonFeature, {
-              onEachFeature: function(feature, layer) {
-                layer.bindPopup('<h3>' + feature.properties.nama + '</h3>'); // Isi sesuai data yang Anda miliki
-              }
-            }).addTo(dma_layer);
-          });
-
-        // Mengimpor data pipa GeoJSON garis dari URL
-        fetch(pipa_geojsonUrl)
-          .then(response => response.json())
-          .then(geojsonFeature => {
-            L.geoJSON(geojsonFeature, {
-              style: function(feature) {
-                // Menyesuaikan warna berdasarkan diameter garis
-                var diameter = feature.properties.diameter; // Ganti dengan nama properti diameter di GeoJSON
-                var color = getColorByDiameter(diameter);
-                return color;
-              },
-              onEachFeature: function(feature, layer) {
-            layer.on('click', function() {
-              // Tindakan yang diambil saat garis di-klik
-              var properties = feature.properties;
-              var message = "Nama: " + properties.name + "<br>" + "Panjang: " + properties.length;
-              alert(message);
-            })}
-            }).addTo(pipa_layer);
-          });
-
-        // Mengimpor data sb GeoJSON garis dari URL
-        fetch(sb_geojsonUrl)
-        .then(response => response.json())
-        .then(geojsonFeature => {
-          L.geoJSON(geojsonFeature, {
-            pointToLayer: function(feature, latlng) {
-              var iconUrl = './icon/SB.svg'
-              var customIcon = L.icon({
-                iconUrl: iconUrl,
-                iconSize: [32, 32], // Ukuran gambar PNG
-                iconAnchor: [16, 32], // Posisi titik yang sesuai dengan gambar
-              });
-              return L.marker(latlng, { icon: customIcon });
-            }
-          }).addTo(sumber_lg);
-        });
- 
-        // Mengimpor data map GeoJSON garis dari URL
-        fetch(map_geojsonUrl)
-        .then(response => response.json())
-        .then(geojsonFeature => {
-          L.geoJSON(geojsonFeature, {
-            pointToLayer: function(feature, latlng) {
-              var iconUrl = './icon/Map.svg'
-              var customIcon = L.icon({
-                iconUrl: iconUrl,
-                iconSize: [32, 32], // Ukuran gambar PNG
-                iconAnchor: [16, 32], // Posisi titik yang sesuai dengan gambar
-              });
-              return L.marker(latlng, { icon: customIcon });
-            }
-          }).addTo(sumber_lg);
-        });
-       
-        // Mengimpor data mag GeoJSON garis dari URL
-         fetch(mag_geojsonUrl)
-        .then(response => response.json())
-        .then(geojsonFeature => {
-          L.geoJSON(geojsonFeature, {
-            pointToLayer: function(feature, latlng) {
-              var iconUrl = './icon/Mag.svg'
-              var customIcon = L.icon({
-                iconUrl: iconUrl,
-                iconSize: [32, 32], // Ukuran gambar PNG
-                iconAnchor: [16, 32], // Posisi titik yang sesuai dengan gambar
-              });
-              return L.marker(latlng, { icon: customIcon });
-            }
-          }).addTo(sumber_lg);
-        });
-  
-        // Mengimpor data res GeoJSON garis dari URL
-        fetch(res_geojsonUrl)
-        .then(response => response.json())
-        .then(geojsonFeature => {
-          L.geoJSON(geojsonFeature, {
-            pointToLayer: function(feature, latlng) {
-              var iconUrl = './icon/Res.svg'
-              var customIcon = L.icon({
-                iconUrl: iconUrl,
-                iconSize: [16, 16], // Ukuran gambar PNG
-                iconAnchor: [16, 32], // Posisi titik yang sesuai dengan gambar
-              });
-              return L.marker(latlng, { icon: customIcon });
-            }
-          }).addTo(sumber_lg);
-        });
-       
- 
-        // Fungsi untuk menentukan warna berdasarkan diameter
-        function getColorByDiameter(diameter) {
-            if (diameter == '300') {
-              return { color: '#59e044', weight: 2 };
-            } else if (diameter == '250') {
-              return { color: '#e514d0', weight: 2.8 };
-            } else if (diameter == '200') {
-              return { color: '#ff7f00', weight: 2.4 };
-            } else if (diameter == '150') {
-              return { color: '#1616ec', weight: 2.2};
-            } else if (diameter == '100') {
-              return { color: '#fa0000', weight: 1 };
-            } else if (diameter == '75') {
-              return { color: '#a6cee3', weight: 1.8 };
-            } else if (diameter == '50') {
-              return { color: '#f1fd05', weight: 1.4 };
-            } else if (diameter == '40') {
-              return { color: '#a6cee3', weight: 1.2 };
-            } else if (diameter == '25') {
-              return { color: '#dbdbdb', weight: 1 };
-            } else if (diameter == '20') {
-              return { color: 'black', weight: 0.5 };
-            }else {
-              return 'black';
-            }
-          }
-
-        // function onLocationFound(e) {
-        //   var radius = e.accuracy / 2;
-
-        //   var locationMarker = L.marker(e.latlng).addTo(map)
-        //     .bindPopup('You are within ' + radius + ' meters from this point').openPopup();
-
-        //   var locationCircle = L.circle(e.latlng, radius).addTo(map);
-        // }
-        // Fungsi untuk memperbarui lokasi marker berdasarkan data Geolocation
-        function updateLocation(position) {
-          var latitude = position.coords.latitude;
-          var longitude = position.coords.longitude;
-
-          // Perbarui lokasi marker
-          marker.setLatLng([latitude, longitude]);
-          map.setView([latitude, longitude], 15); // Contoh zoom level 15
-        }
-
-        // Fungsi yang akan dipanggil saat permintaan lokasi berhasil
-        function successCallback(position) {
-          updateLocation(position);
-        }
-
-        // Fungsi untuk mengaktifkan/mematikan pembaruan lokasi
-        function toggleLocationUpdate() {
-          if (watchId === null) {
-            watchId = navigator.geolocation.watchPosition(successCallback, errorCallback);
+        ons.getScriptPage().addEventListener('prechange', function (event) {
+          if (event.target.matches('#appTabbar')) {
+            event.currentTarget.querySelector('ons-toolbar .center').innerHTML = event.tabItem.getAttribute(
+              'label');
           } else {
-            navigator.geolocation.clearWatch(watchId);
-            watchId = null;
+            console.log('tidak sama');
           }
-        }
-
-        // Tambahkan event listener untuk tombol toggle
-        document.getElementById('toggleButton').addEventListener('click', toggleLocationUpdate);
-        
-
-        // Fungsi yang akan dipanggil saat permintaan lokasi gagal
-        function errorCallback(error) {
-          console.error('Error getting location:', error);
-        }
-
-        // Minta izin pengguna untuk akses lokasi
-        // if ('geolocation' in navigator) {
-        //   navigator.geolocation.watchPosition(successCallback, errorCallback);
-        // } else {
-        //   console.error('Geolocation is not supported in this browser.');
-        // }
-
-        }
- 
-
+        });
       </script>
     </ons-page>
   </template>
-  
-  <template id="forms.html">
-    <ons-page id="forms-page">
+
+  <template id="home.html">
+    <ons-page>
+      <div class="container-slide">
+        <div class="gallery-cell" onclick="fn.loadView('lokpel.html')" tappable></div>
+        <div class="gallery-cell"></div>
+        <div class="gallery-cell"></div>
+        <div class="gallery-cell"></div>
+      </div>
+      <div class="wrapper-gis">
+        <div class="gis-item-title p10">Pemetaan GIS</div>
+        <div class="container-gis">
+          <div class="gis-item" id="ke_lokpel">
+            <div class="gis-item-img">
+              <img src="/icon/map.png" />
+            </div>
+            <div class="gis-item-text">
+              <span>Cari Pelanggan</span>
+            </div>
+          </div>
+          <div class="gis-item" id="ke_leakagelocation">
+            <div class="gis-item-img">
+              <img src="/icon/location.png" />
+            </div>
+            <div class="gis-item-text">
+              <span>Aduan Location</span>
+            </div>
+          </div>
+          <div class="gis-item">
+            <div class="gis-item-img">
+              <img src="/icon/water-meter.png" />
+            </div>
+            <div class="gis-item-text">
+              <span>Water Meter</span>
+            </div>
+          </div>
+          <div class="gis-item">
+            <div class="gis-item-img">
+              <img src="/icon/manometer.png">
+            </div>
+            <div class="gis-item-text">
+              <span>Presure Mano</span>
+            </div>
+          </div>
+          <div class="gis-item" id="ke_manometer">
+            <div class="gis-item-img">
+              <img src="/icon/valve.png" />
+            </div>
+            <div class="gis-item-text">
+              <span>Gate Valve</span>
+            </div>
+          </div>
+          <div class="gis-item">
+            <div class="gis-item-img">
+              <img src="/icon/Washout.png" />
+            </div>
+            <div class="gis-item-text">
+              <span>Kuras Washout</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hubla-wrapper">
+        <div class="hubla-title">Hubungan Langganan</div>
+        <div class="hubla-row">
+          <div>
+            <div class="hubla-list-item" id="ke_infpel">
+              <div class="hubla-list-item-img">
+                <img src="/icon/history-book.png" alt="Data Info">
+              </div>
+              <div class="hubla-list-item-text">
+                <span>Info Pelanggan</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="hubla-list-item" id="">
+              <div class="hubla-list-item-img">
+                <img src="/icon/search.png" alt="Data Pelanggan">
+              </div>
+              <div class="hubla-list-item-text">
+                <span>Data Pelanggan</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="hubla-list-item">
+              <div class="hubla-list-item-img" id="ke_skp">
+                <img src="/icon/ratings.png" alt="Data RDS">
+              </div>
+              <div class="hubla-list-item-text">
+                <span>SKP</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="hubla-list-item" id="ke_cf">
+              <div class="hubla-list-item-img">
+                <img src="/icon/leaking.png" alt="Data RDS">
+              </div>
+              <div class="hubla-list-item-text">
+                <span>Cabut Fisik</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="hubla-list-item" id="ke_rds">
+              <div class="hubla-list-item-img">
+                <img src="/icon/online-survey.png" alt="Data RDS">
+              </div>
+              <div class="hubla-list-item-text">
+                <span>RDS</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="hubla-list-item" id="ke_perpe">
+              <div class="hubla-list-item-img">
+                <img src="/icon/market.png" alt="Data RDS">
+              </div>
+              <div class="hubla-list-item-text">
+                <span>Persebaran Pelanggan</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="hubla-list-item" id="ke_dp">
+              <div class="hubla-list-item-img">
+                <img src="/icon/complaint.png" alt="Data Pengaduan">
+              </div>
+              <div class="hubla-list-item-text">
+                <span>Daftar Pengaduan</span>
+              </div>
+            </div>
+          </div>
+          <div class="hubla-list-item" id="ke_bil">
+            <div class="hubla-list-item-img">
+              <img src="/icon/bill.png" alt="Cek Tagihan Air">
+            </div>
+            <div class="hubla-list-item-text">
+              <span>Cek Tagihan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>
+        .p10 {
+          padding-left: 10px;
+        }
+
+        .container-slide {
+          padding: 10px;
+          display: flex;
+          flex-direction: row;
+          justify-content: start;
+          height: 240px;
+          margin-bottom: 10px;
+          overflow: scroll;
+        }
+
+        .gallery-cell {
+          min-width: 382px;
+          margin-right: 10px;
+          background: rgb(0, 118, 255);
+          border-radius: 5px;
+        }
+
+        /* Gis Items */
+        .wrapper-gis {
+          margin-bottom: 10px;
+        }
+
+        .container-gis {
+          padding: 10px;
+          display: flex;
+          flex-direction: row;
+          justify-content: start;
+          min-height: 86px;
+          width: auto;
+          overflow: scroll;
+        }
+
+        .gis-item-title {
+          min-width: 100%;
+          font-weight: 800;
+        }
+
+        .gis-item {
+          min-width: 70px;
+          min-height: 60px;
+          background: white;
+          border-radius: 5px;
+          align-items: center;
+          text-align: center;
+          box-sizing: border-box;
+          margin-right: 10px;
+          width: auto;
+          padding: 10px;
+          font-size: 12px;
+          color: #212121;
+          line-height: 12px;
+        }
+
+        .gis-item-img {
+          min-height: 35px;
+        }
+
+        .gis-item img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          margin-bottom: 10px;
+        }
+
+        .gis-item-text {
+          line-height: 14px;
+          margin-top: 10px;
+        }
+
+        .hubla-wrapper {
+          padding: 10px;
+        }
+
+        .hubla-row {
+          display: flex;
+          flex-wrap: wrap;
+          flex-direction: row;
+          align-content: space-between;
+          justify-content: space-between;
+          width: 100%;
+          background-color: #fff;
+          font-size: 12px;
+        }
+
+        .hubla-title {
+          font-weight: 800;
+          margin-bottom: 10px;
+          text-align: left;
+        }
+
+        .hubla-list-item {
+          width: 80px;
+          height: 148px;
+          text-align: center;
+          box-sizing: border-box;
+          padding: 10px;
+
+        }
+
+        .hubla-list-item img {
+          width: 64px
+        }
+      </style>
+
+      <script>
+        ons.getScriptPage().onInit = function () {
+          var page = event.target;
+
+          function pindahPage(link, target_page, mydata) {
+            var switchButton = document.querySelector(link);
+            switchButton.addEventListener('click', function () {
+              document.querySelector('#appNavigator').pushPage(target_page, {
+                data: mydata
+              });
+            });
+          };
+
+          pindahPage('#ke_lokpel', 'lokpel.html', {
+            title: 'Lokasi Pelanggan'
+          });
+          pindahPage('#ke_leakagelocation', 'leakage-location.html', {
+            title: 'Leackage Location'
+          });
+        };
+
+        // pindahPage('ke_mano','mano',{title : 'Manimeter'});
+      </script>
+    </ons-page>
+  </template>
+
+  <template id="aksesoris.html">
+    <ons-page id="aksesoris-page">
       <ons-list>
         <ons-list-header>Text input</ons-list-header>
         <ons-list-item class="input-items">
@@ -490,16 +510,16 @@
             <ons-icon icon="md-face" class="list-item__icon"></ons-icon>
           </div>
           <label class="center">
-          <ons-input id="name-input" float maxlength="20" placeholder="Name"></ons-input>
-        </label>
+            <ons-input id="name-input" float maxlength="20" placeholder="Name"></ons-input>
+          </label>
         </ons-list-item>
         <ons-list-item class="input-items">
           <div class="left">
             <ons-icon icon="fa-question-circle-o" class="list-item__icon"></ons-icon>
           </div>
           <label class="center">
-          <ons-search-input id="search-input" maxlength="20" placeholder="Search"></ons-search-input>
-        </label>
+            <ons-search-input id="search-input" maxlength="20" placeholder="Search"></ons-search-input>
+          </label>
         </ons-list-item>
         <ons-list-item>
           <div class="right right-label">
@@ -507,7 +527,7 @@
             <ons-icon icon="fa-hand-spock-o" size="lg" class="right-icon"></ons-icon>
           </div>
         </ons-list-item>
-  
+
         <ons-list-header>Switches</ons-list-header>
         <ons-list-item>
           <label class="center" for="switch1">
@@ -525,7 +545,7 @@
             <ons-switch id="disabled-switch" input-id="switch2"></ons-switch>
           </div>
         </ons-list-item>
-  
+
         <ons-list-header>Select</ons-list-header>
         <ons-list-item>
           <div class="center">
@@ -540,13 +560,13 @@
                 Angular
               </option>
             </ons-select>
-  
+
           </div>
           <div class="right right-label">
             <span id="awesome-platform">Vue&nbsp;</span>is awesome!
           </div>
         </ons-list-item>
-  
+
         <ons-list-header>Radio buttons</ons-list-header>
         <ons-list-item tappable>
           <label class="left">
@@ -571,7 +591,7 @@
             I love Bananas!
           </div>
         </ons-list-item>
-  
+
         <ons-list-header>Checkboxes - <span id="checkboxes-header">Green,Blue</span></ons-list-header>
         <ons-list-item tappable>
           <label class="left">
@@ -597,7 +617,7 @@
             Blue
           </label>
         </ons-list-item>
-  
+
         <ons-list-header>Range slider</ons-list-header>
         <ons-list-item>
           Adjust the volume:
@@ -612,10 +632,11 @@
               <ons-icon icon="md-volume-up"></ons-icon>
             </ons-col>
           </ons-row>
-          Volume:<span id="volume-value">&nbsp;25</span> <span id="careful-message" style="display: none">&nbsp;(careful, that's loud)</span>
+          Volume:<span id="volume-value">&nbsp;25</span> <span id="careful-message"
+            style="display: none">&nbsp;(careful, that's loud)</span>
         </ons-list-item>
       </ons-list>
-  
+
       <script>
         ons.getScriptPage().onInit = function () {
           if (ons.platform.isAndroid()) {
@@ -631,7 +652,8 @@
           var updateInputs = function (event) {
             nameInput.value = event.target.value;
             searchInput.value = event.target.value;
-            document.getElementById('name-display').innerHTML = event.target.value !== '' ? `Hello ${event.target.value}!` : 'Hello anonymous!';
+            document.getElementById('name-display').innerHTML = event.target.value !== '' ?
+              `Hello ${event.target.value}!` : 'Hello anonymous!';
           }
           nameInput.addEventListener('input', updateInputs);
           searchInput.addEventListener('input', updateInputs);
@@ -685,729 +707,1125 @@
           })
         }
       </script>
-  
+
       <style>
         .right-icon {
           margin-left: 10px;
         }
-  
+
         .right-label {
           color: #666;
         }
       </style>
     </ons-page>
   </template>
-  
-  <template id="animations.html">
+
+  <template id="gis.html">
     <ons-page>
-      <ons-list>
-        <ons-list-header>Transitions</ons-list-header>
-        <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'none'}, 'none')">
-          none
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'default'}, 'default')">
-          default
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'slide-ios'}, 'slide-ios')">
-          slide-ios
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'slide-md'}, 'slide-md')">
-          slide-md
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'lift-ios'}, 'lift-ios')">
-          lift-ios
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'lift-md'}, 'lift-md')">
-          lift-md
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'fade-ios'}, 'fade-ios')">
-          fade-ios
-        </ons-list-item>
-        <ons-list-item modifier="chevron" onclick="fn.pushPage({'id': 'transition.html', 'title': 'fade-md'}, 'fade-md')">
-          fade-md
-        </ons-list-item>
-      </ons-list>
-    </ons-page>
-  </template>
-  
-  <template id="pullHook.html">
-    <ons-page>
-      <ons-toolbar>
-        <div class="left">
-          <ons-back-button>Home</ons-back-button>
-        </div>
-        <div class="center"></div>
-      </ons-toolbar>
-  
-      <ons-pull-hook id="pull-hook" threshold-height="120px">
-        <ons-icon id="pull-hook-icon" size="22px" class="pull-hook-content" icon="fa-arrow-down"></ons-icon>
-      </ons-pull-hook>
-  
-      <ons-list id="kitten-list">
-        <ons-list-header>Pull to refresh</ons-list-header>
-      </ons-list>
-  
+      <div id='mymap'></div>
+      <ons-fab position="bottom right" id="toggleButton">
+        <ons-icon icon="md-plus">
+        </ons-icon>
+      </ons-fab>
+
+      <style>
+        #mymap {
+          width: 100%;
+          height: 100vh;
+        }
+      </style>
+
       <script>
         ons.getScriptPage().onInit = function () {
-          this.querySelector('ons-toolbar div.center').textContent = this.data.title;
-          var pullHook = document.getElementById('pull-hook');
-          var icon = document.getElementById('pull-hook-icon');
-          pullHook.addEventListener('changestate', function (event) {
-            switch (event.state) {
-              case 'initial':
-                icon.setAttribute('icon', 'fa-arrow-down');
-                icon.removeAttribute('rotate');
-                icon.removeAttribute('spin');
-                break;
-              case 'preaction':
-                icon.setAttribute('icon', 'fa-arrow-down');
-                icon.setAttribute('rotate', '180');
-                icon.removeAttribute('spin');
-                break;
-              case 'action':
-                icon.setAttribute('icon', 'fa-spinner');
-                icon.removeAttribute('rotate');
-                icon.setAttribute('spin', true);
-                break;
-            }
+          var map = L.map('mymap').fitWorld();
+          var dma_geojsonUrl = './geojson/dma.geojson';
+          var pipa_geojsonUrl = './geojson/pipa_new.geojson';
+          var sb_geojsonUrl = './geojson/sb.geojson';
+          var map_geojsonUrl = './geojson/map.geojson';
+          var mag_geojsonUrl = './geojson/mag.geojson';
+          var res_geojsonUrl = './geojson/res.geojson';
+
+
+          // Buat grup layer untuk menyimpan lapisan
+          var dma_layer = L.layerGroup();
+          var pipa_layer = L.layerGroup();
+
+          // digunakan jika mau layer tidak di group
+          var sb_layer = L.layerGroup();
+          var map_layer = L.layerGroup();
+          var mag_layer = L.layerGroup();
+          var res_layer = L.layerGroup();
+
+          var sumber_lg = L.layerGroup();
+
+          // var title = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          //       maxZoom: 19,
+          //       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          //     }).addTo(map);
+          // Base map (peta latar) dari OpenStreetMap
+
+          var mbAttr =
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
+          var mbUrl =
+            'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYXJpYW5haXdhbiIsImEiOiJjbGQ4NWkzajMxMW84M3FtbTRwd2FvM2RyIn0.lyvWMJwp6a-FjSPJ8Ijm9A';
+          // Base map (peta latar) dari Mapbox Satellite
+          var mapboxSatellite = L.tileLayer(
+            'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+              maxZoom: 19,
+              attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a>',
+              id: 'mapbox/satellite-v9',
+              tileSize: 512,
+              zoomOffset: -1,
+              accessToken: 'pk.eyJ1IjoiYXJpYW5haXdhbiIsImEiOiJjbGQ4NWkzajMxMW84M3FtbTRwd2FvM2RyIn0.lyvWMJwp6a-FjSPJ8Ijm9A'
+            });
+          var streets = L.tileLayer(mbUrl, {
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            attribution: mbAttr
           });
-          var getRandomName = function () {
-            const names = ['Oscar', 'Max', 'Tiger', 'Sam', 'Misty', 'Simba', 'Coco', 'Chloe', 'Lucy', 'Missy'];
-            return names[Math.floor(Math.random() * names.length)];
+
+          var openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+          });
+
+
+          // Membuat kontrol layer
+
+          var overlayMaps = {
+            "Dma": dma_layer,
+            "Pipa": pipa_layer,
+            "Sumber": sumber_lg
+
           };
-          var getRandomUrl = function () {
-            const width = 40 + Math.floor(20 * Math.random());
-            const height = 40 + Math.floor(20 * Math.random());
-            return `https://placekitten.com/g/${width}/${height}`;
-          };
-          var getRandomKitten = function () {
-            return {
-              name: getRandomName(),
-              url: getRandomUrl()
-            };
-          };
-          var getRandomData = function () {
-            const data = [];
-            for (var i = 0; i < 8; i++) {
-              data.push(getRandomKitten());
-            }
-            return data;
-          };
-          var createKitten = function (kitten) {
-            return ons.createElement(`
-                <ons-list-item>
-                  <div class="left">
-                    <img class="list-item__thumbnail" src="${kitten.url}">
-                  </div>
-                  <div class="center">${kitten.name}</div>
-                </ons-list-item>
-              `
-            );
-          };
-          var kittens = getRandomData();
-          for (kitty of kittens) {
-            var kitten = createKitten(kitty);
-            document.getElementById('kitten-list').appendChild(kitten);
-          };
-          pullHook.onAction = function (done) {
-            setTimeout(function() {
-              document.getElementById('kitten-list').appendChild(createKitten(getRandomKitten()));
-              done();
-            }, 400);
+          var baseMaps = {
+            "OpenStreetMap": openStreetMap,
+            "Mapbox Streets": streets,
+            "Mapbox Satellite": mapboxSatellite
           }
-        };
-      </script>
-  
-      <style>
-        .pull-hook-content {
-          color: #666;
-          transition: transform .25s ease-in-out;
-        }
-      </style>
-    </ons-page>
-  </template>
-  
-  <template id="dialogs.html">
-    <ons-page id="dialogs-page">
-      <ons-toolbar>
-        <div class="left">
-          <ons-back-button>Home</ons-back-button>
-        </div>
-        <div class="center"></div>
-        <div class="right">
-          <ons-toolbar-button id="info-button" onclick="fn.showDialog('popover-dialog')"></ons-toolbar-button>
-        </div>
-      </ons-toolbar>
-  
-      <ons-list-title>Notifications</ons-list-title>
-      <ons-list modifier="inset">
-        <ons-list-item tappable modifier="longdivider" onclick="ons.notification.alert('Hello, world!')">
-          <div class="center">
-            Alert
-          </div>
-        </ons-list-item>
-        <ons-list-item tappable modifier="longdivider" onclick="ons.notification.confirm('Are you ready?')">
-          <div class="center">
-            Simple Confirmation
-          </div>
-        </ons-list-item>
-        <ons-list-item tappable modifier="longdivider" onclick="ons.notification.prompt('What is your name?')">
-          <div class="center">
-            Prompt
-          </div>
-        </ons-list-item>
-        <ons-list-item tappable modifier="longdivider" onclick="ons.notification.toast('Hi there!', { buttonLabel: 'Dismiss', timeout: 1500 })">
-          <div class="center">
-            Toast
-          </div>
-        </ons-list-item>
-        <ons-list-item tappable modifier="longdivider" onclick="ons.openActionSheet({ buttons: ['Label 1', 'Label 2', 'Label 3', 'Cancel'], destructive: 2, cancelable: true })">
-          <div class="center">
-            Action/Bottom Sheet
-          </div>
-        </ons-list-item>
-      </ons-list>
-  
-      <ons-list-title>Components</ons-list-title>
-      <ons-list modifier="inset">
-        <ons-list-item tappable modifier="longdivider" onclick="fn.showDialog('lorem-dialog')">
-          <div class="center">
-            Simple Dialog
-          </div>
-        </ons-list-item>
-        <ons-list-item tappable modifier="longdivider" onclick="fn.showDialog('watHmmSure-dialog')">
-          <div class="center">
-            Alert Dialog
-          </div>
-        </ons-list-item>
-        <ons-list-item tappable modifier="longdivider" onclick="fn.showDialog('toast-dialog')">
-          <div class="center">
-            Toast (top)
-          </div>
-        </ons-list-item>
-        <ons-list-item tappable modifier="longdivider" onclick="fn.showDialog('modal-dialog')">
-          <div class="center">
-            Modal
-          </div>
-        </ons-list-item>
-        <ons-list-item tappable modifier="longdivider" onclick="fn.showDialog('popover-dialog')">
-          <div class="center">
-            Popover - MD Menu
-          </div>
-        </ons-list-item>
-        <ons-list-item tappable modifier="longdivider" onclick="fn.showDialog('action-sheet-dialog')">
-          <div class="center">
-            Action/Bottom Sheet
-          </div>
-        </ons-list-item>
-      </ons-list>
-  
-      <!-- Components -->
-      <ons-dialog id="lorem-dialog" cancelable>
-        <!-- Optional page. This could contain a Navigator as well. -->
-        <ons-page>
-          <ons-toolbar>
-            <div class="center">Simple Dialog</div>
-          </ons-toolbar>
-          <p style="text-align: center">Lorem ipsum dolor</p>
-          <p style="text-align: center">
-            <ons-button modifier="light" onclick="fn.hideDialog('lorem-dialog')">Close</ons-button>
-          </p>
-        </ons-page>
-      </ons-dialog>
-  
-      <ons-alert-dialog id="watHmmSure-dialog" cancelable>
-        <div class="alert-dialog-title">Hey!!</div>
-        <div class="alert-dialog-content">
-          Lorem ipsum
-          <ons-icon icon="fa-commenting-o"></ons-icon>
-        </div>
-        <div class="alert-dialog-footer">
-          <button class="alert-dialog-button" onclick="fn.hideDialog('watHmmSure-dialog')">Wat</button>
-          <button class="alert-dialog-button" onclick="fn.hideDialog('watHmmSure-dialog')">Hmm</button>
-          <button class="alert-dialog-button" onclick="fn.hideDialog('watHmmSure-dialog')">Sure</button>
-        </div>
-      </ons-alert-dialog>
-  
-      <ons-toast id="toast-dialog" animation="fall">Supercalifragilisticexpialidocious<button onclick="fn.hideDialog('toast-dialog')">No way</button></ons-toast>
-  
-      <ons-modal id="modal-dialog" onclick="fn.hideDialog('modal-dialog')">
-        <p style="text-align: center">
-          Loading
-          <ons-icon icon="fa-spinner" spin></ons-icon>
-          <br><br> Click or wait
-        </p>
-      </ons-modal>
-  
-      <ons-popover id="popover-dialog" cancelable direction="down" cover-target target="#info-button">
-        <ons-list id="popover-list">
-          <ons-list-item class="more-options" tappable onclick="fn.hideDialog('popover-dialog')">
-            <div class="center">Call history</div>
-          </ons-list-item>
-          <ons-list-item class="more-options" tappable onclick="fn.hideDialog('popover-dialog')">
-            <div class="center">Import/export</div>
-          </ons-list-item>
-          <ons-list-item class="more-options" tappable onclick="fn.hideDialog('popover-dialog')">
-            <div class="center">New contact</div>
-          </ons-list-item>
-          <ons-list-item class="more-options" tappable onclick="fn.hideDialog('popover-dialog')">
-            <div class="center">Settings</div>
-          </ons-list-item>
-        </ons-list>
-      </ons-popover>
-  
-      <ons-action-sheet id="action-sheet-dialog" cancelable>
-        <ons-action-sheet-button onclick="fn.hideDialog('action-sheet-dialog')" icon="md-square-o">Action 1</ons-action-sheet-button>
-        <ons-action-sheet-button onclick="fn.hideDialog('action-sheet-dialog')" icon="md-square-o">Action 2</ons-action-sheet-button>
-        <ons-action-sheet-button onclick="fn.hideDialog('action-sheet-dialog')" modifier="destructive" icon="md-square-o">Action 3</ons-action-sheet-button>
-        <ons-action-sheet-button onclick="fn.hideDialog('action-sheet-dialog')" icon="md-square-o">Cancel</ons-action-sheet-button>
-      </ons-action-sheet>
-  
-      <script>
-        ons.getScriptPage().onInit = function () {
-          this.querySelector('ons-toolbar div.center').textContent = this.data.title;
-          var toolbarButton = ons.platform.isAndroid() ? ons.createElement(`<ons-icon icon="md-more-vert"></ons-icon>`) : ons.createElement(`<span>More</span>`);
-          var infoButton = document.getElementById('info-button');
-          infoButton.appendChild(toolbarButton);
-          var toastDialog = document.getElementById('toast-dialog');
-          toastDialog.parentNode.removeChild(toastDialog);
-          document.getElementById('dialogs-page').appendChild(toastDialog);
-          var timeoutID = 0;
-          window.fn.showDialog = function (id) {
-            var elem = document.getElementById(id);
-            if (id === 'popover-dialog') {
-              elem.show(infoButton);
+
+          // L.control.layers(null, overlayMaps,).addTo(map);
+          // Menggabungkan base maps dan overlay layer dalam satu kontrol layer
+          L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+          var marker = L.marker(['-8.536294722356594', '115.32536629044803']).addTo(map); // Membuat marker awal
+          var watchId = null; // ID watchPosition yang akan disimpan
+
+          // Mengimpor data dma GeoJSON dari URL
+          fetch(dma_geojsonUrl)
+            .then(response => response.json())
+            .then(geojsonFeature => {
+              L.geoJSON(geojsonFeature, {
+                onEachFeature: function (feature, layer) {
+                  layer.bindPopup('<h3>' + feature.properties.nama +
+                    '</h3>'); // Isi sesuai data yang Anda miliki
+                }
+              }).addTo(dma_layer);
+            });
+
+          // Mengimpor data pipa GeoJSON garis dari URL
+          fetch(pipa_geojsonUrl)
+            .then(response => response.json())
+            .then(geojsonFeature => {
+              L.geoJSON(geojsonFeature, {
+                style: function (feature) {
+                  // Menyesuaikan warna berdasarkan diameter garis
+                  var diameter = feature.properties
+                    .diameter; // Ganti dengan nama properti diameter di GeoJSON
+                  var color = getColorByDiameter(diameter);
+                  return color;
+                },
+                onEachFeature: function (feature, layer) {
+                  layer.on('click', function () {
+                    // Tindakan yang diambil saat garis di-klik
+                    var properties = feature.properties;
+                    var message = "Nama: " + properties.name + "<br>" + "Panjang: " + properties.length;
+                    alert(message);
+                  })
+                }
+              }).addTo(pipa_layer);
+            });
+
+          // Mengimpor data sb GeoJSON garis dari URL
+          fetch(sb_geojsonUrl)
+            .then(response => response.json())
+            .then(geojsonFeature => {
+              L.geoJSON(geojsonFeature, {
+                pointToLayer: function (feature, latlng) {
+                  var iconUrl = './icon/SB.svg'
+                  var customIcon = L.icon({
+                    iconUrl: iconUrl,
+                    iconSize: [32, 32], // Ukuran gambar PNG
+                    iconAnchor: [16, 32], // Posisi titik yang sesuai dengan gambar
+                  });
+                  return L.marker(latlng, {
+                    icon: customIcon
+                  });
+                }
+              }).addTo(sumber_lg);
+            });
+
+          // Mengimpor data map GeoJSON garis dari URL
+          fetch(map_geojsonUrl)
+            .then(response => response.json())
+            .then(geojsonFeature => {
+              L.geoJSON(geojsonFeature, {
+                pointToLayer: function (feature, latlng) {
+                  var iconUrl = './icon/Map.svg'
+                  var customIcon = L.icon({
+                    iconUrl: iconUrl,
+                    iconSize: [32, 32], // Ukuran gambar PNG
+                    iconAnchor: [16, 32], // Posisi titik yang sesuai dengan gambar
+                  });
+                  return L.marker(latlng, {
+                    icon: customIcon
+                  });
+                }
+              }).addTo(sumber_lg);
+            });
+
+          // Mengimpor data mag GeoJSON garis dari URL
+          fetch(mag_geojsonUrl)
+            .then(response => response.json())
+            .then(geojsonFeature => {
+              L.geoJSON(geojsonFeature, {
+                pointToLayer: function (feature, latlng) {
+                  var iconUrl = './icon/Mag.svg'
+                  var customIcon = L.icon({
+                    iconUrl: iconUrl,
+                    iconSize: [32, 32], // Ukuran gambar PNG
+                    iconAnchor: [16, 32], // Posisi titik yang sesuai dengan gambar
+                  });
+                  return L.marker(latlng, {
+                    icon: customIcon
+                  });
+                }
+              }).addTo(sumber_lg);
+            });
+
+          // Mengimpor data res GeoJSON garis dari URL
+          fetch(res_geojsonUrl)
+            .then(response => response.json())
+            .then(geojsonFeature => {
+              L.geoJSON(geojsonFeature, {
+                pointToLayer: function (feature, latlng) {
+                  var iconUrl = './icon/Res.svg'
+                  var customIcon = L.icon({
+                    iconUrl: iconUrl,
+                    iconSize: [16, 16], // Ukuran gambar PNG
+                    iconAnchor: [16, 32], // Posisi titik yang sesuai dengan gambar
+                  });
+                  return L.marker(latlng, {
+                    icon: customIcon
+                  });
+                }
+              }).addTo(sumber_lg);
+            });
+
+
+          // Fungsi untuk menentukan warna berdasarkan diameter
+          function getColorByDiameter(diameter) {
+            if (diameter == '300') {
+              return {
+                color: '#59e044',
+                weight: 2
+              };
+            } else if (diameter == '250') {
+              return {
+                color: '#e514d0',
+                weight: 2.8
+              };
+            } else if (diameter == '200') {
+              return {
+                color: '#ff7f00',
+                weight: 2.4
+              };
+            } else if (diameter == '150') {
+              return {
+                color: '#1616ec',
+                weight: 2.2
+              };
+            } else if (diameter == '100') {
+              return {
+                color: '#fa0000',
+                weight: 1
+              };
+            } else if (diameter == '75') {
+              return {
+                color: '#a6cee3',
+                weight: 1.8
+              };
+            } else if (diameter == '50') {
+              return {
+                color: '#f1fd05',
+                weight: 1.4
+              };
+            } else if (diameter == '40') {
+              return {
+                color: '#a6cee3',
+                weight: 1.2
+              };
+            } else if (diameter == '25') {
+              return {
+                color: '#dbdbdb',
+                weight: 1
+              };
+            } else if (diameter == '20') {
+              return {
+                color: 'black',
+                weight: 0.5
+              };
             } else {
-              elem.show();
-              if (id === 'modal-dialog') {
-                clearTimeout(timeoutID);
-                timeoutID = setTimeout(function() { fn.hideDialog(id) }, 2000);
-              }
-            }
-          };
-          window.fn.hideDialog = function (id) {
-            document.getElementById(id).hide();
-          };
-          const moreOptions = document.querySelectorAll('.more-options');
-          if (!ons.platform.isAndroid()) {
-            document.getElementById('watHmmSure-dialog').setAttribute('modifier', 'rowfooter');
-            for (option of moreOptions) {
-              option.hasAttribute('modifier') ?
-                option.setAttribute('modifier', option.getAttribute('modifier') + ' longdivider') :
-                option.setAttribute('modifier', 'longdivider');
-            }
-          } else {
-            for (option of moreOptions) {
-              option.hasAttribute('modifier') ?
-                option.setAttribute('modifier', option.getAttribute('modifier') + ' nodivider') :
-                option.setAttribute('modifier', 'nodivider');
+              return 'black';
             }
           }
-        };
-        document.getElementById('appNavigator').topPage.onDestroy = function () {
-          var toastDialog = document.getElementById('toast-dialog');
-          toastDialog.parentNode.removeChild(toastDialog);
-          document.querySelector('#dialogs-page .page__content').appendChild(toastDialog);
+
+          // function onLocationFound(e) {
+          //   var radius = e.accuracy / 2;
+
+          //   var locationMarker = L.marker(e.latlng).addTo(map)
+          //     .bindPopup('You are within ' + radius + ' meters from this point').openPopup();
+
+          //   var locationCircle = L.circle(e.latlng, radius).addTo(map);
+          // }
+          // Fungsi untuk memperbarui lokasi marker berdasarkan data Geolocation
+          function updateLocation(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            // Perbarui lokasi marker
+            marker.setLatLng([latitude, longitude]);
+            map.setView([latitude, longitude], 15); // Contoh zoom level 15
+          }
+
+          // Fungsi yang akan dipanggil saat permintaan lokasi berhasil
+          function successCallback(position) {
+            updateLocation(position);
+          }
+
+          // Fungsi untuk mengaktifkan/mematikan pembaruan lokasi
+          function toggleLocationUpdate() {
+            if (watchId === null) {
+              watchId = navigator.geolocation.watchPosition(successCallback, errorCallback);
+            } else {
+              navigator.geolocation.clearWatch(watchId);
+              watchId = null;
+            }
+          }
+
+          // Tambahkan event listener untuk tombol toggle
+          document.getElementById('toggleButton').addEventListener('click', toggleLocationUpdate);
+
+
+          // Fungsi yang akan dipanggil saat permintaan lokasi gagal
+          function errorCallback(error) {
+            console.error('Error getting location:', error);
+          }
+
+          // Minta izin pengguna untuk akses lokasi
+          // if ('geolocation' in navigator) {
+          //   navigator.geolocation.watchPosition(successCallback, errorCallback);
+          // } else {
+          //   console.error('Geolocation is not supported in this browser.');
+          // }
+
         }
       </script>
-  
-      <style>
-        #lorem-dialog .dialog-container {
-          height: 200px;
-        }
-  
-        ons-list-title {
-          margin-top: 20px;
-        }
-      </style>
     </ons-page>
   </template>
-  
-  <template id="buttons.html">
-    <ons-page>
+
+  <template id="lokpel.html">
+    <ons-page id="lokpel">
       <ons-toolbar>
         <div class="left">
-          <ons-back-button>Home</ons-back-button>
+          <ons-back-button>Back</ons-back-button>
         </div>
-        <div class="center"></div>
+        <div class="center">Lokasi Pelanggan</div>
+        <div class="right">
+        </div>
       </ons-toolbar>
-  
-      <section style="margin: 16px">
-        <ons-button class="button-margin">Normal</ons-button>
-        <ons-button modifier="quiet" class="button-margin">Quiet</ons-button>
-        <ons-button modifier="outline" class="button-margin">Outline</ons-button>
-        <ons-button modifier="cta" class="button-margin">Call to action</ons-button>
-        <ons-button modifier="light" class="button-margin">Light</ons-button>
-        <ons-button modifier="large" class="button-margin">Large</ons-button>
-      </section>
-  
-      <section style="margin: 16px">
-        <ons-button class="button-margin" disabled>Normal</ons-button>
-        <ons-button modifier="quiet" class="button-margin" disabled>Quiet</ons-button>
-        <ons-button modifier="outline" class="button-margin" disabled>Outline</ons-button>
-        <ons-button modifier="cta" class="button-margin" disabled>Call to action</ons-button>
-        <ons-button modifier="light" class="button-margin" disabled>Light</ons-button>
-        <ons-button modifier="large" class="button-margin" disabled>Large</ons-button>
-      </section>
-  
-      <ons-fab position="top right">
-        <ons-icon icon="md-face"></ons-icon>
-      </ons-fab>
-  
-      <ons-fab position="bottom left" disabled>
-        <ons-icon icon="md-car"></ons-icon>
-      </ons-fab>
-  
-      <ons-speed-dial position="bottom right" direction="up" :open.sync="spdOpen">
+      <div style="position:relative">
+        <div id="map1" style="width: 100%; height: 400px;"></div>
+        <div class="profile-wrapper">
+          <div class="multisearch">
+            <ons-list-item>
+              <div class="center">
+                Aktifkan untuk pencarian banyak data lokasi Pelanggan
+              </div>
+              <div class="right">
+                <ons-switch id="mySwitch"></ons-switch>
+              </div>
+            </ons-list-item>
+          </div>
+
+          <div class="detail-profile">
+            <div class="foto-wrapper">
+              <div class="foto">
+                <img src="https://via.placeholder.com/64x64" alt="">
+              </div>
+              <div class="text">
+                <div class="nama" id="profile_nama"> -</div>
+                <div class="alamat" id="profile_alamat">-</div>
+              </div>
+            </div>
+            <div class="item-wrapper">
+              <div class="label">Nama</div>
+              <div class="label-value" id="nama">: -</div>
+            </div>
+            <div class="item-wrapper">
+              <div class="label">Alamat</div>
+              <div class="label-value" id="alamat">: -</div>
+            </div>
+            <div class="item-wrapper">
+              <div class="label">Gol</div>
+              <div class="label-value" id="gol">: -</div>
+            </div>
+            <div class="item-wrapper">
+              <div class="label">Wilayah</div>
+              <div class="label-value" id="wilayah">: -</div>
+            </div>
+            <div class="item-wrapper">
+              <div class="label">Area</div>
+              <div class="label-value" id="area">: -</div>
+            </div>
+            <div class="item-wrapper">
+              <div class="label">Rayon</div>
+              <div class="label-value" id="rayon">: -</div>
+            </div>
+          </div>
+          <div class="search-box" id="searchBox">
+            <form id="searchForm">
+              <input type="text" class="search-input" id="searchInput" placeholder="Search...">
+            </form>
+          </div>
+
+        </div>
+      </div>
+      <ons-speed-dial position="bottom right" direction="up">
         <ons-fab>
           <ons-icon icon="md-share"></ons-icon>
         </ons-fab>
-        <ons-speed-dial-item onclick="ons.notification.confirm(`Share on Twitter?`)">
-          <ons-icon icon="md-twitter"></ons-icon>
+        <ons-speed-dial-item>
+          <ons-icon icon="md-search" id="searchButton"></ons-icon>
         </ons-speed-dial-item>
-        <ons-speed-dial-item onclick="ons.notification.confirm(`Share on Facebook?`)">
-          <ons-icon icon="md-facebook"></ons-icon>
-        </ons-speed-dial-item>
-        <ons-speed-dial-item onclick="ons.notification.confirm(`Share on Google+`)">
-          <ons-icon icon="md-google-plus"></ons-icon>
+        <ons-speed-dial-item>
+          <ons-icon icon="md-delete" id="clearButton"></ons-icon>
         </ons-speed-dial-item>
       </ons-speed-dial>
-  
-      <script>
-        ons.getScriptPage().onInit = function () {
-          this.querySelector('ons-toolbar div.center').textContent = this.data.title;
-        }
-      </script>
-  
+
       <style>
-        .button-margin {
-          margin: 6px 0;
+        .multisearch {
+          background-color: white;
+          margin: 10px 0 0px 0px;
         }
-      </style>
-    </ons-page>
-  </template>
-  
-  <template id="carousel.html">
-    <ons-page>
-      <ons-toolbar>
-        <div class="left">
-          <ons-back-button>Home</ons-back-button>
-        </div>
-        <div class="center"></div>
-      </ons-toolbar>
-  
-      <ons-carousel id="carousel" fullscreen swipeable auto-scroll overscrollable initial-index="0">
-        <ons-carousel-item class="carousel-item" style="background-color: gray">
-          <div class="color-tag">Gray</div>
-        </ons-carousel-item>
-        <ons-carousel-item class="carousel-item" style="background-color: #085078">
-          <div class="color-tag">Blue</div>
-        </ons-carousel-item>
-        <ons-carousel-item class="carousel-item" style="background-color: #373B44">
-          <div class="color-tag">Dark</div>
-        </ons-carousel-item>
-        <ons-carousel-item class="carousel-item" style="background-color: #D38312">
-          <div class="color-tag">Orange</div>
-        </ons-carousel-item>
-      </ons-carousel>
-  
-      <div class="dots">
-        <span id="dot0" class="dot" onclick="fn.swipe(this)">
-          &#9679;
-        </span>
-        <span id="dot1" class="dot" onclick="fn.swipe(this)">
-          &#9675;
-        </span>
-        <span id="dot2" class="dot" onclick="fn.swipe(this)">
-          &#9675;
-        </span>
-        <span id="dot3" class="dot" onclick="fn.swipe(this)">
-          &#9675;
-        </span>
-      </div>
-  
-      <script>
-        ons.getScriptPage().onInit = function () {
-          this.querySelector('ons-toolbar div.center').textContent = this.data.title;
-          const carousel = document.getElementById('carousel');
-          carousel.addEventListener('postchange', function () {
-            var index = carousel.getActiveIndex();
-            const dots = document.querySelectorAll('.dot');
-            for (dot of dots) {
-              dot.innerHTML = dot.id === 'dot' + index ? '&#9679;' : '&#9675;';
-            }
-          });
-          window.fn.swipe = function (target) {
-            carousel.setActiveIndex(Number(target.id.slice(-1)));
-          }
-        }
-      </script>
-  
-      <style>
-        .carousel-item {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-        }
-  
-        .color-tag {
-          color: #fff;
-          font-size: 48px;
-          font-weight: bold;
-          text-transform: uppercase;
-        }
-  
-        .dots {
-          text-align: center;
-          font-size: 30px;
-          color: #fff;
+
+        .search-button {
           position: absolute;
-          bottom: 40px;
-          left: 0;
-          right: 0;
-        }
-  
-        .dots > span {
+          top: 20px;
+          right: 20px;
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
           cursor: pointer;
+          transition: opacity 0.5s;
+        }
+
+        .search-button:focus {
+          outline: none;
+        }
+
+        .search-box {
+          z-index: 999999;
+          display: none;
+          position: absolute;
+          top: 20px;
+          right: 10px;
+          background-color: #fff;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+          opacity: 0;
+          transition: opacity 0.5s;
+          width: 50%;
+          text-align: center;
+        }
+
+        .search-box.active {
+          display: block;
+          opacity: 1;
+        }
+
+        .search-input {
+          width: 90%;
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+        }
+
+
+        .foto_profile {
+          display: flex;
+          justify-content: start;
+          font-size: 12px;
+          margin-bottom: 20px;
+
+        }
+
+        .foto-wrapper {
+          display: flex;
+          justify-content: start;
+          margin-bottom: 20px;
+        }
+
+        .foto img {
+          border-radius: 50%;
+          border: 5px solid #0076FF;
+          margin-top: 20px;
+          margin-right: 10px;
+          border: 50%;
+          text-align: left;
+        }
+
+        .nama {
+          font-weight: 800;
+          margin-top: 35px;
+        }
+
+        .foto_profile text {
+          margin-top: 20px;
+        }
+
+        .detail-profile {
+          min-width: 100%;
+          margin-top: 10px;
+          background-color: #fff;
+          padding: 16px;
+        }
+
+        .item-wrapper {
+          display: flex;
+          height: 24px;
+        }
+
+        .item-wrapper .label {
+          text-align: left;
+          width: 40%;
+          color: rgba(0, 0, 0, .54);
+        }
+
+        .item-wrapper .label-value {
+          text-align: left;
+          width: 60%;
+          color: #31335B;
+
         }
       </style>
-    </ons-page>
-  </template>
-  
-  <template id="loadMore.html">
-    <!-- Load more items on scroll bottom -->
-    <ons-page id="load-more-page" on-infinite-scroll="fn.loadMore">
-      <p class="intro">
-        Useful for loading more items when the scroll reaches the bottom of the page, typically after an asynchronous API call.<br><br>
-      </p>
-  
-      <ons-list id="list-node"></ons-list>
-  
-      <div class="after-list">
-        <ons-icon icon="fa-spinner" size="26px" spin></ons-icon>
-      </div>
-  
+
       <script>
         ons.getScriptPage().onInit = function () {
-          var listNode = document.getElementById('list-node');
-          var createListItem = function (i) {
-            return ons.createElement(`<ons-list-item>Item #${i}</ons-list-item>`);
-          }
-          for (var i = 0; i < 30; i++) {
-            listNode.appendChild(createListItem(i));
-          }
-          window.fn.loadMore = function (done) {
-            setTimeout(function() {
-              const listLength = listNode.children.length;
-              for (var i = 0; i < 10; i++) {
-                listNode.appendChild(createListItem(listLength + i));
+          var map = L.map('map1').setView([0, 0], 10);
+
+          L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+              'Imagery © <a href="https://www.mapbox.com/">&copy; Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoiYXJpYW5haXdhbiIsImEiOiJjbGQ4NWkzajMxMW84M3FtbTRwd2FvM2RyIn0.lyvWMJwp6a-FjSPJ8Ijm9A'
+          }).addTo(map);
+
+          var startLocation = null;
+
+          var orsApiKey = '5b3ce3597851110001cf6248402b5ec1784440c785706489732ebb5e';
+
+
+          function getLocation() {
+            return new Promise(function (resolve, reject) {
+              if ("geolocation" in navigator) {
+                navigator.geolocation.watchPosition(function (position) {
+                  var latitude = position.coords.latitude;
+                  var longitude = position.coords.longitude;
+                  if (!startLocation) {
+                    startLocation = L.latLng(latitude, longitude);
+                  }
+                  resolve({
+                    latitude: latitude,
+                    longitude: longitude
+                  });
+
+                }, function (error) {
+                  reject(error);
+                });
+              } else {
+                reject("Geolocation tidak didukung oleh peramban ini.");
               }
-              done();
-            }, 600)
+            });
           }
-        }
-      </script>
-  
-      <style>
-        .after-list {
-          margin: 20px;
-          text-align: center;
-        }
-      </style>
-    </ons-page>
-  </template>
-  
-  <template id="lazyRepeat.html">
-    <!-- Lazy load thousands of items -->
-    <ons-page id="lazy-repeat-page">
-      <p class="intro">
-        Automatically unloads items that are not visible and loads new ones. Useful when the list contains thousands of items.<br><br>
-      </p>
-  
-      <ons-list>
-        <ons-lazy-repeat id="infinite-list"></ons-lazy-repeat>
-      </ons-list>
-  
-      <script>
-        ons.getScriptPage().onInit = function () {
-          var infiniteList = document.getElementById('infinite-list');
-  
-          infiniteList.delegate = {
-            createItemContent: function (i) {
-              return ons.createElement(`<ons-list-item>Item #${i}</ons-list-item>`);
-            },
-            countItems: function () {
-              return 3000;
+
+          function searchAndRoute(keyword) {
+            // Anda perlu menggantikan URL dengan URL file GeoJSON eksternal
+            var geojsonURL = 'http://125.162.138.4:8010/pelanggan/'+keyword;
+            fetch(geojsonURL)
+              .then(response => response.json())
+              .then(data => {
+                var geojsonFeatures = data.features;
+
+                var foundFeature = null;
+                for (var i = 0; i < geojsonFeatures.length; i++) {
+                  if (geojsonFeatures[i].properties.nosamb == keyword) {
+                    foundFeature = geojsonFeatures[i];
+                    break;
+                  }
+                }
+
+                if (foundFeature) {
+                  var endLocation = L.latLng(foundFeature.geometry.coordinates[1], foundFeature.geometry
+                    .coordinates[0]);
+                  // Menggunakan ikon kustom untuk start dan end location
+                  var startIcon = L.icon({
+                    iconUrl: '/icon/start.png', // Ganti dengan path gambar PNG untuk start location
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32]
+                  });
+
+                  var endIcon = L.icon({
+                    iconUrl: '/icon/location.png', // Ganti dengan path gambar PNG untuk end location
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32]
+                  });
+
+                  // Menambahkan marker dengan ikon kustom pada start dan end location
+                  // L.marker([startLocation.lat, startLocation.lng], {
+                  //   icon: startIcon
+                  // }).addTo(map);
+                  L.marker([endLocation.lat, endLocation.lng], {
+                    icon: endIcon
+                  }).addTo(map);
+
+                  // Panggil fungsi untuk melakukan routing dengan OpenRouteService
+                  calculateAndShowRoute(startLocation, endLocation);
+
+
+                  // Memperbarui data pada elemen HTML
+                  document.getElementById('profile_nama').textContent = foundFeature.properties.nama;
+                  document.getElementById('profile_alamat').textContent = foundFeature.properties.alamat;
+                  document.getElementById('nama').textContent = foundFeature.properties.nama;
+                  document.getElementById('alamat').textContent = foundFeature.properties.alamat;
+                  document.getElementById('gol').textContent = foundFeature.properties.kode_gol;
+                  document.getElementById('wilayah').textContent = foundFeature.properties.wilayah;
+                  document.getElementById('area').textContent = foundFeature.properties.area;
+                  document.getElementById('rayon').textContent = foundFeature.properties.rayon;
+                } else {
+                  alert("Data tidak ditemukan.");
+                }
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          }
+
+          var routeLine = undefined;
+
+          function calculateAndShowRoute(start, end) {
+            var orsApiUrl =
+              `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${orsApiKey}&start=${start.lng},${start.lat}&end=${end.lng},${end.lat}`;
+            fetch(orsApiUrl)
+              .then(response => response.json())
+              .then(data => {
+                var routeData = data.features[0].geometry.coordinates;
+                var routeData = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+
+                routeLine = L.polyline(routeData, {
+                  color: 'blue'
+                }).addTo(map);
+                map.fitBounds(routeLine.getBounds());
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          }
+
+
+
+
+          // Buat variabel untuk menyimpan marker posisi saat ini
+          var currentPositionMarker = null;
+
+          // Fungsi untuk memperbarui marker posisi saat ini
+          function updateCurrentPositionMarker(latitude, longitude) {
+            console.log('Update location... ' + currentPositionMarker);
+            var currentPositionIcon = L.icon({
+              iconUrl: '/icon/walk.png', // Ganti dengan path gambar PNG untuk start location
+              iconSize: [32, 32],
+              iconAnchor: [16, 32]
+            });
+
+            if (!currentPositionMarker) {
+              // Buat marker baru dengan ikon posisi saat ini
+              currentPositionMarker = L.marker([latitude, longitude], {
+                icon: currentPositionIcon,
+              }).addTo(map);
+            } else {
+              // Perbarui posisi marker
+              currentPositionMarker.setLatLng([latitude, longitude]);
             }
-          };
-  
-          infiniteList.refresh();
-        }
-      </script>
-  
-      <style>
-        .intro {
-          text-align: center;
-          padding: 0 20px;
-          margin-top: 40px;
-        }
-      </style>
-    </ons-page>
-  </template>
-  
-  <template id="infiniteScroll.html">
-    <ons-page>
-      <ons-toolbar>
-        <div class="left">
-          <ons-back-button>Home</ons-back-button>
-        </div>
-        <div class="center"></div>
-      </ons-toolbar>
-  
-      <ons-tabbar position="auto">
-        <ons-tab label="Load More" page="loadMore.html"></ons-tab>
-        <ons-tab label="Lazy Repeat" page="lazyRepeat.html" active></ons-tab>
-      </ons-tabbar>
-  
-      <script>
-        ons.getScriptPage().onInit = function () {
-          this.querySelector('ons-toolbar div.center').textContent = this.data.title;
-        }
-      </script>
-    </ons-page>
-  </template>
-  
-  <template id="progress.html">
-    <ons-page>
-      <ons-toolbar>
-        <div class="left">
-          <ons-back-button>Home</ons-back-button>
-        </div>
-        <div class="center"></div>
-      </ons-toolbar>
-  
-      <ons-progress-bar id="progress-value" class="progressStyle" value="0"></ons-progress-bar>
-  
-      <section style="margin: 40px 16px">
-        <p id="progress-status">
-          Progress: 0%
-        </p>
-  
-        <p>
-          <ons-progress-bar class="progressStyle" value="20"></ons-progress-bar>
-        </p>
-  
-        <p>
-          <ons-progress-bar class="progressStyle" value="40" secondary-value="80"></ons-progress-bar>
-        </p>
-  
-        <p>
-          <ons-progress-bar class="progressStyle" indeterminate></ons-progress-bar>
-        </p>
-  
-        <div style="text-align: center; margin: 40px; color: #666">
-          <p>
-            <ons-progress-circular class="progressStyle" value="20"></ons-progress-circular>
-            <ons-progress-circular class="progressStyle" value="40" secondary-value="80"></ons-progress-circular>
-            <ons-progress-circular class="progressStyle" indeterminate></ons-progress-circular>
-          </p>
-  
-          <p>
-            <ons-icon icon="ion-ios-cog" spin size="30px"></ons-icon>
-            <ons-icon icon="ion-ios-cog" spin size="30px"></ons-icon>
-            <ons-icon icon="ion-ios-cog" spin size="30px"></ons-icon>
-            <ons-icon icon="ion-ios-cog" spin size="30px"></ons-icon>
-          </p>
-  
-          <p>
-            <ons-icon icon="fa-spinner" spin size="26px"></ons-icon>
-            <ons-icon icon="circle-o-notch" spin size="26px"></ons-icon>
-          </p>
-  
-          <p>
-            <ons-icon icon="md-spinner" spin size="30px"></ons-icon>
-          </p>
-        </div>
-  
-        <p>
-          <ons-button modifier="large">
-            <ons-icon icon="ion-ios-cog" spin size="26px"></ons-icon>
-          </ons-button>
-          <br><br>
-          <ons-button modifier="large" disabled>
-            <ons-icon icon="ion-ios-cog" spin size="26px"></ons-icon>
-          </ons-button>
-        </p>
-      </section>
-  
-      <script>
-        ons.getScriptPage().onInit = function () {
-          this.querySelector('ons-toolbar div.center').textContent = this.data.title;
-          if (!ons.platform.isAndroid()) {
-            const progressStyle = document.querySelectorAll('.progressStyle');
-            for (progress of progressStyle) {
-              progress.hasAttribute('modifier') ?
-                progress.setAttribute('modifier', progress.getAttribute('modifier') + ' ios') :
-                progress.setAttribute('modifier', 'ios');
+
+            // Pindahkan tampilan peta ke posisi baru
+            map.panTo([latitude, longitude]);
+          }
+
+          // Panggil fungsi untuk memperbarui posisi saat halaman dimuat
+          getLocation().then(function (coords) {
+            updateCurrentPositionMarker(coords.latitude, coords.longitude);
+          }).catch(function (error) {
+            console.error(error);
+          });
+
+          // Fungsi untuk memperbarui posisi secara terus-menerus
+          function updatePositionContinuously() {
+            getLocation().then(function (coords) {
+              updateCurrentPositionMarker(coords.latitude, coords.longitude);
+              setTimeout(updatePositionContinuously, 1000); // Memperbarui setiap 1 detik
+            }).catch(function (error) {
+              console.error(error);
+              setTimeout(updatePositionContinuously, 1000); // Memperbarui setiap 1 detik
+            });
+          }
+
+          // Panggil fungsi untuk memulai pembaruan posisi secara terus-menerus
+          updatePositionContinuously();
+
+
+          const searchButton = document.getElementById('searchButton');
+          const clearButton = document.getElementById('clearButton');
+          const searchBox = document.getElementById('searchBox');
+          const searchInput = document.getElementById('searchInput');
+
+          clearButton.addEventListener('click', () => {
+            searchInput.focus();
+            clearRouteLine();
+          });
+
+          searchButton.addEventListener('click', () => {
+            searchBox.classList.toggle('active');
+            searchInput.focus();
+          });
+          searchForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission behavior
+            const searchTerm = searchInput.value;
+            console.log(`Searching for: ${searchTerm}`);
+            var cekStatus = localStorage.getItem('switchStatus');
+            searchAndRoute(searchTerm);
+            if (cekStatus == "false") {
+              clearFeatures();
+              currentPositionMarker = null;
+            }
+            // You can perform your search or other actions here
+          });
+          // Metode untuk menghapus semua objek dari peta
+          // Hapus semua marker, polyline, dan poligon dari peta
+          function clearFeatures() {
+            map.eachLayer(function (layer) {
+              if (layer instanceof L.Marker || layer instanceof L.Polyline || layer instanceof L.Polygon) {
+                map.removeLayer(layer);
+              }
+            });
+          }
+          // Hapus polyline (routeLine) dari peta
+          function clearRouteLine() {
+            if (routeLine) {
+              map.removeLayer(routeLine);
+              routeLine = null; // Setel kembali variabel routeLine menjadi null
             }
           }
-          var progressStatus = document.getElementById('progress-status');
-          var progressValue = document.getElementById('progress-value');
-          var intervalID = 0;
-          intervalID = setInterval(function() {
-            if (progressValue.value === 100) {
-              clearInterval(intervalID);
-              return;
+
+          // Dapatkan referensi ke elemen switch
+          const switchElement = document.getElementById('mySwitch');
+
+          var status = localStorage.getItem('switcStatus');
+          if (status == "true") {
+            switchElement.checked = true;
+          } else {
+            switchElement.checked = false;
+          }
+          // Tambahkan event listener untuk perubahan status switch
+          switchElement.addEventListener('change', function () {
+            if (switchElement.checked) {
+              localStorage.setItem('switchStatus', 'true');
+              switchElement.checked = true;
+            } else {
+              localStorage.setItem('switchStatus', 'false');
+              switchElement.checked = false;
             }
-            progressValue.value++;
-            progressStatus.innerHTML = `Progress: ${progressValue.value}%`;
-          }, 40);
+
+          });
+
+
         }
       </script>
-  
-      <style>
-        /* 'ios' modifier */
-  
-        .progress-bar--ios__primary,
-        .progress-bar--ios.progress-bar--indeterminate::before,
-        .progress-bar--ios.progress-bar--indeterminate::after {
-          background-color: #4282cc
-        }
-  
-        .progress-bar--ios__secondary {
-          background-color: #87b6eb;
-        }
-  
-        .progress-circular--ios__primary {
-          stroke: #4282cc
-        }
-  
-        .progress-circular--ios__secondary {
-          stroke: #87b6eb;
-        }
-      </style>
     </ons-page>
   </template>
-  
-  <template id="transition.html">
+
+  <template id="leakage-location.html">
     <ons-page>
       <ons-toolbar>
         <div class="left">
-          <ons-back-button>Animations</ons-back-button>
+          <ons-back-button>Back</ons-back-button>
         </div>
-        <div class="center"></div>
+        <div class="center">Leakage Location</div>
+        <div class="right">
+        </div>
       </ons-toolbar>
-      <p style="text-align: center">
-        Use the VOnsBackButton
-      </p>
+      <div style="position:relative">
+        <div id="map2" style="width: 100%; height: 500px" style="margin-bottom: 10px;"></div>
+        <div id="pengaduan">
+          <ons-list>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="color" input-id="radio-p1" id="bpt"></ons-radio>
+              </label>
+              <label for="radio-p1" class="center">
+                Bocor Pipa Transmisi
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="color" input-id="radio-p2" id="bpd"></ons-radio>
+              </label>
+              <label for="radio-p2" class="center">
+                Bocor Pipa Distribusi
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="color" input-id="radio-p3" id="bpdi"></ons-radio>
+              </label>
+              <label for="radio-p3" class="center">
+                Bocor Pipa Dinas
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="color" input-id="radio-p4" id="pwm"></ons-radio>
+              </label>
+              <label for="radio-p4" class="center">
+                Perbaikan Water Meter
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="color" input-id="radio-p5" id="pgwm"></ons-radio>
+              </label>
+              <label for="radio-p5" class="center">
+                Pergantian WM
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="color" input-id="radio-p6" id="pti"></ons-radio>
+              </label>
+              <label for="radio-p6" class="center">
+                Pemakaian Tinggi
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="color" input-id="radio-p7" id="ak"></ons-radio>
+              </label>
+              <label for="radio-p7" class="center">
+                Air Kecil
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="color" input-id="radio-p8" id="taa"></ons-radio>
+              </label>
+              <label for="radio-p8" class="center">
+                Tidak Ada Air
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="color" input-id="radio-p9" id="ake"></ons-radio>
+              </label>
+              <label for="radio-p9" class="center">
+                Air Keruh
+              </label>
+            </ons-list-item>
+          </ons-list>
+        </div>
+
+        <div id="layer">
+          <ons-list>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-checkbox input-id="check-3"></ons-checkbox>
+              </label>
+              <label for="check-3" class="center">
+                DMA
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-checkbox input-id="check-4"></ons-checkbox>
+              </label>
+              <label for="check-4" class="center">
+                Pipa
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-checkbox input-id="check-5"></ons-checkbox>
+              </label>
+              <label for="check-5" class="center">
+                Sumber
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-checkbox input-id="check-6"></ons-checkbox>
+              </label>
+              <label for="check-6" class="center">
+                Balai Banjar
+              </label>
+            </ons-list-item>
+          </ons-list>
+        </div>
+      </div>
+
+      <ons-speed-dial position="bottom right" direction="up">
+        <ons-fab>
+          <ons-icon icon="md-share"></ons-icon>
+        </ons-fab>
+        <ons-speed-dial-item>
+          <ons-icon icon="md-search" id="searchButton"></ons-icon>
+        </ons-speed-dial-item>
+        <ons-speed-dial-item>
+          <ons-icon icon="md-delete" id="clearButton"></ons-icon>
+        </ons-speed-dial-item>
+      </ons-speed-dial>
+
+      <style>
+        #map2 {
+          margin-bottom: 10px;
+        }
+
+        #pengaduan,
+        #layer {
+          margin-bottom: 10px;
+        }
+      </style>
+
       <script>
         ons.getScriptPage().onInit = function () {
-          this.querySelector('ons-toolbar div.center').textContent = this.data.title;
+          var map = L.map('map2').setView([0, 0], 10);
+
+          L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+              'Imagery © <a href="https://www.mapbox.com/">&copy; Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoiYXJpYW5haXdhbiIsImEiOiJjbGQ4NWkzajMxMW84M3FtbTRwd2FvM2RyIn0.lyvWMJwp6a-FjSPJ8Ijm9A'
+          }).addTo(map);
+
+          var startLocation = null;
+
+          var orsApiKey = '5b3ce3597851110001cf6248402b5ec1784440c785706489732ebb5e';
+          console.log("Jalannnnn");
+          document.getElementById("bpt").addEventListener('change', function () {
+            ambilData('bocor pipa transmisi');
+          });
+          document.getElementById("bpd").addEventListener('change', function () {
+            ambilData('bocor pipa distribusi');
+          });
+          document.getElementById("ak").addEventListener('change', function () {
+            ambilData('air kecil');
+          });
+          document.getElementById("ake").addEventListener('change', function () {
+            ambilData('air keruh');
+          });
+          document.getElementById("bpdi").addEventListener('change', function () {
+            ambilData('bocor pipa dinas');
+          });
+          document.getElementById("pwm").addEventListener('change', function () {
+            ambilData('perbaikan wm');
+          });
+          document.getElementById("pgwm").addEventListener('change', function () {
+            ambilData('pergantian wm');
+          });
+          document.getElementById("pti").addEventListener('change', function () {
+            ambilData('pemakaian tinggi');
+          });
+
+
+          function ambilData(jenis) {
+            fetch("http://125.162.138.4:8010/pengaduan/" + jenis)
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+                // Hapus marker yang ada sebelumnya
+                map.eachLayer(layer => {
+                  if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                  }
+                });
+
+                data.features.forEach(feature => {
+                  var longitude = feature.geometry.coordinates[0];
+                  var latitude = feature.geometry.coordinates[1];
+
+                  var marker = L.marker([latitude, longitude]).addTo(map);
+
+                  // Tambahkan info popup jika diperlukan
+                  var properties = feature.properties;
+                  var popupContent =
+                    `<b>${properties.jenis_nonair}</b><br>Pelayanan : ${properties.wilayah},<br>Nama Rayon : ${properties.namarayon}<br>Id SPK : ${properties.id_spk}<br>No. BAP : ${properties.no_bap}<br>No. Pengaduan : ${properties.no_pengaduan}<br>Tgl. Gangguan : ${properties.tgl_gangguan}<br>Tgl. Pengerjaan : ${properties.tgl_pekerjaan}<br>Tgl. Selesai : ${properties.tgl_selesai}`;
+                  marker.bindPopup(popupContent);
+                });
+              })
+              .catch(error => {
+                console.error('Error fetching data:', error);
+              });
+          }
+
+
+
+
+          function getLocation() {
+            return new Promise(function (resolve, reject) {
+              if ("geolocation" in navigator) {
+                navigator.geolocation.watchPosition(function (position) {
+                  var latitude = position.coords.latitude;
+                  var longitude = position.coords.longitude;
+                  if (!startLocation) {
+                    startLocation = L.latLng(latitude, longitude);
+                  }
+                  resolve({
+                    latitude: latitude,
+                    longitude: longitude
+                  });
+
+                }, function (error) {
+                  reject(error);
+                });
+              } else {
+                reject("Geolocation tidak didukung oleh peramban ini.");
+              }
+            });
+          }
+
+          // Buat variabel untuk menyimpan marker posisi saat ini
+          var currentPositionMarker = null;
+
+          // Fungsi untuk memperbarui marker posisi saat ini
+          function updateCurrentPositionMarker(latitude, longitude) {
+            console.log('Update location... ' + currentPositionMarker);
+            var currentPositionIcon = L.icon({
+              iconUrl: '/icon/walk.png', // Ganti dengan path gambar PNG untuk start location
+              iconSize: [32, 32],
+              iconAnchor: [16, 32]
+            });
+
+            if (!currentPositionMarker) {
+              // Buat marker baru dengan ikon posisi saat ini
+              currentPositionMarker = L.marker([latitude, longitude], {
+                icon: currentPositionIcon,
+              }).addTo(map);
+            } else {
+              // Perbarui posisi marker
+              currentPositionMarker.setLatLng([latitude, longitude]);
+            }
+
+            // Pindahkan tampilan peta ke posisi baru
+            map.panTo([latitude, longitude]);
+          }
+
+          // Panggil fungsi untuk memperbarui posisi saat halaman dimuat
+          getLocation().then(function (coords) {
+            updateCurrentPositionMarker(coords.latitude, coords.longitude);
+          }).catch(function (error) {
+            console.error(error);
+          });
+
+          // Fungsi untuk memperbarui posisi secara terus-menerus
+          function updatePositionContinuously() {
+            getLocation().then(function (coords) {
+              updateCurrentPositionMarker(coords.latitude, coords.longitude);
+              setTimeout(updatePositionContinuously, 1000); // Memperbarui setiap 1 detik
+            }).catch(function (error) {
+              console.error(error);
+              setTimeout(updatePositionContinuously, 1000); // Memperbarui setiap 1 detik
+            });
+          }
+
+          // Panggil fungsi untuk memulai pembaruan posisi secara terus-menerus
+          updatePositionContinuously();
+
+
+          const clearButton = document.getElementById('clearButton');
+          const searchBox = document.getElementById('searchBox');
+          const searchInput = document.getElementById('searchInput');
+
+          clearButton.addEventListener('click', () => {
+            searchInput.focus();
+            clearRouteLine();
+          });
+
+          searchButton.addEventListener('click', () => {
+            searchBox.classList.toggle('active');
+            searchInput.focus();
+          });
+
+          // Metode untuk menghapus semua objek dari peta
+          // Hapus semua marker, polyline, dan poligon dari peta
+          function clearFeatures() {
+            map.eachLayer(function (layer) {
+              if (layer instanceof L.Marker || layer instanceof L.Polyline || layer instanceof L.Polygon) {
+                map.removeLayer(layer);
+              }
+            });
+          }
+          // Hapus polyline (routeLine) dari peta
+          function clearRouteLine() {
+            if (routeLine) {
+              map.removeLayer(routeLine);
+              routeLine = null; // Setel kembali variabel routeLine menjadi null
+            }
+          }
+
+          // Dapatkan referensi ke elemen switch
+          const switchElement = document.getElementById('mySwitch');
+
+          var status = localStorage.getItem('switcStatus');
+          if (status == "true") {
+            switchElement.checked = true;
+          } else {
+            switchElement.checked = false;
+          }
+          // Tambahkan event listener untuk perubahan status switch
+          switchElement.addEventListener('change', function () {
+            if (switchElement.checked) {
+              localStorage.setItem('switchStatus', 'true');
+              switchElement.checked = true;
+            } else {
+              localStorage.setItem('switchStatus', 'false');
+              switchElement.checked = false;
+            }
+
+          });
+
+
         }
       </script>
     </ons-page>
   </template>
-  
+
   <style>
     ons-splitter-side[animation=overlay] {
       border-left: 1px solid #bbb;
@@ -1415,21 +1833,19 @@
   </style>
 
   <script>
-window.fn = {};
+    document.addEventListener("DOMContentLoaded", function () {
+      ons.ready(function () {
 
-window.fn.toggleMenu = function () {
-  document.getElementById('appSplitter').right.toggle();
-};
+        // Jalankan kode JavaScript Anda di sini setelah semua elemen terkait dengan template dimuat
+        // Misalnya, Anda dapat menginisialisasi elemen, menghubungkan event listener, dll.
 
-window.fn.loadView = function (index) {
-  document.getElementById('appTabbar').setActiveTab(index);
-  document.getElementById('sidemenu').close();
-};
+        // Contoh: Mengambil referensi ke elemen map1 setelah elemen tersebut dimuat
 
-window.fn.loadLink = function (url) {
-  window.open(url, '_blank');
-};
+        // Lakukan hal-hal lain yang Anda perlukan setelah elemen terkait dengan template dimuat
+      });
+    });
+  </script>
 
- </script>
 </body>
+
 </html>
