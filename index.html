@@ -1270,8 +1270,8 @@
 
           function searchAndRoute(keyword) {
             // Anda perlu menggantikan URL dengan URL file GeoJSON eksternal
-            var geojsonURL = 'http://125.162.138.4:8010/pelanggan/'+keyword;
-            fetch(geojsonURL)
+            var pel_geojsonUrl = './geojson/pelanggan.geojson';
+            fetch(pel_geojsonUrl)
               .then(response => response.json())
               .then(data => {
                 var geojsonFeatures = data.features;
